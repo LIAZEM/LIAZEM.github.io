@@ -1,97 +1,82 @@
 <!DOCTYPE html>
-<html>
+<html lang="zh-CN">
 <head>
-    <meta charset="utf-8" />
-    <title>实战留言板</title>
-    <link rel="stylesheet" type="text/css" href='style.css' />
+    <meta charset="UTF-8">
+    <title>留言板</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: auto;
+            padding: 20px;
+            background-color: #f4f4f9;
+        }
+        .message-board {
+            border: 1px solid #ccc;
+            padding: 10px;
+            background: white;
+            margin-bottom: 20px;
+        }
+        .message {
+            border-bottom: 1px solid #ddd;
+            padding: 10px 0;
+        }
+        .message:last-child {
+            border-bottom: none;
+        }
+        form {
+            margin-top: 20px;
+        }
+        textarea, input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            margin: 5px 0;
+            box-sizing: border-box;
+        }
+        input[type="submit"] {
+            padding: 10px 20px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        input[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+    </style>
 </head>
 <body>
-    <h1 align="center">码夫破石防遗忘写的一个简单的留言板</h1>
-    <h6 align="center">纯HTML，没有任何脚本</h6>
-    <div class='main'>
-        <!-- BOF 发表留言 -->
-        <div class='add'>
-            <textarea class='content' cols='50' rows='5'></textarea>
-            <br/>
-            <input class='user' type='text' />
-            <input class='btn' type='submit' value="提交" />
+    <div class="message-board">
+        <h1>留言板</h1>
+        <!-- 留言列表 -->
+        <div id="messages">
+            <!-- 动态生成留言内容的地方 -->
         </div>
-        <!-- EOF 发表留言 -->
-
-        <!-- BOF 查看留言 -->
-        <div class='msg'>
-            <div class='info'>
-                <span class='user'>留言人</span>
-                <span class='time'>留言时间：2020-05-22 15:23:23</span>
-            </div>
-            <div class='content'>
-                留言内容，留言内容，留言内容，留言内容，留言内容，留言内容，留言内容。
-            </div>
-        </div>
-        <div class='msg'>
-            <div class='info'>
-                <span class='user'>留言人</span>
-                <span class='time'>留言时间：2020-05-22 15:23:23</span>
-            </div>
-            <div class='content'>
-                留言内容，留言内容，留言内容，留言内容，留言内容，留言内容，留言内容。
-            </div>
-        </div>
-        <div class='msg'>
-            <div class='info'>
-                <span class='user'>留言人</span>
-                <span class='time'>留言时间：2020-05-22 15:23:23</span>
-            </div>
-            <div class='content'>
-                留言内容，留言内容，留言内容，留言内容，留言内容，留言内容，留言内容。
-            </div>
-        </div>
-        <div class='msg'>
-            <div class='info'>
-                <span class='user'>留言人</span>
-                <span class='time'>留言时间：2020-05-22 15:23:23</span>
-            </div>
-            <div class='content'>
-                留言内容，留言内容，留言内容，留言内容，留言内容，留言内容，留言内容。
-            </div>
-        </div>
-        <div class='msg'>
-            <div class='info'>
-                <span class='user'>留言人</span>
-                <span class='time'>留言时间：2020-05-22 15:23:23</span>
-            </div>
-            <div class='content'>
-                留言内容，留言内容，留言内容，留言内容，留言内容，留言内容，留言内容。
-            </div>
-        </div>
-        <div class='msg'>
-            <div class='info'>
-                <span class='user'>留言人</span>
-                <span class='time'>留言时间：2020-05-22 15:23:23</span>
-            </div>
-            <div class='content'>
-                留言内容，留言内容，留言内容，留言内容，留言内容，留言内容，留言内容。
-            </div>
-        </div>
-        <div class='msg'>
-            <div class='info'>
-                <span class='user'>留言人</span>
-                <span class='time'>留言时间：2020-05-22 15:23:23</span>
-            </div>
-            <div class='content'>
-                留言内容，留言内容，留言内容，留言内容，留言内容，留言内容，留言内容。
-            </div>
-        </div>
-        <div class='msg'>
-            <div class='info'>
-                <span class='user'>留言人</span>
-                <span class='time'>留言时间：2020-05-22 15:23:23</span>
-            </div>
-            <div class='content'>
-                留言内容，留言内容，留言内容，留言内容，留言内容，留言内容，留言内容。
-            </div>
-        </div>
-        <!-- EOF 查看留言 -->
+        
+        <!-- 留言表单 -->
+        <form id="messageForm" onsubmit="event.preventDefault(); addMessage();">
+            <label for="name">姓名:</label>
+            <input type="text" id="name" placeholder="请输入您的名字" required>
+            <label for="message">留言:</label>
+            <textarea id="message" rows="4" placeholder="在这里写下您的留言..." required></textarea>
+            <input type="submit" value="提交留言">
+        </form>
     </div>
+
+    <script>
+        function addMessage() {
+            var name = document.getElementById('name').value;
+            var message = document.getElementById('message').value;
+            if (name && message) {
+                var messagesDiv = document.getElementById('messages');
+                var newMessage = document.createElement('div');
+                newMessage.className = 'message';
+                newMessage.innerHTML = '<strong>' + name + '</strong>: ' + message;
+                messagesDiv.appendChild(newMessage);
+                document.getElementById('name').value = '';
+                document.getElementById('message').value = '';
+            }
+        }
+    </script>
 </body>
 </html>
